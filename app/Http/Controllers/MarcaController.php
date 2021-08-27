@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MarcaRequest;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,6 @@ class MarcaController extends Controller
         $this->marca = $marca;
     }
     /**
-     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -27,12 +27,11 @@ class MarcaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Requests\MarcaRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MarcaRequest $request)
     {
         //$marca = Marca::create($request->all());
         $marca = $this->marca->create($request->all());
@@ -40,7 +39,6 @@ class MarcaController extends Controller
     }
 
     /**
-     * Display the specified resource.
      *
      * @param  Integer
      * @return \Illuminate\Http\Response
@@ -55,14 +53,14 @@ class MarcaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Requests\MarcaRequest  $request
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
+        dd($request);
         // print_r($request->all());
         // //Dados antigos
         // print_r($marca->getAttributes());
@@ -76,7 +74,6 @@ class MarcaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
      *
      * @param  integer
      * @return \Illuminate\Http\Response
