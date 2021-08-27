@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MarcaRequest;
 use App\Models\Marca;
-use Illuminate\Http\Request;
 
 class MarcaController extends Controller
 {
@@ -58,9 +57,8 @@ class MarcaController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MarcaRequest $request, $id)
     {
-        dd($request);
         // print_r($request->all());
         // //Dados antigos
         // print_r($marca->getAttributes());
