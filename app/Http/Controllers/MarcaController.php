@@ -67,6 +67,7 @@ class MarcaController extends Controller
         if($marca === null){
             return response()->json(['erro'=>'Atualização não realizada. Recurso pesquisado não existe', 404]);
         }
+
         $marca->update($request->all());
         return response()->json($marca,200);
     }

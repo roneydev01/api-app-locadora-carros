@@ -24,9 +24,23 @@ class MarcaRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'nome' => ['required','min:3', Rule::unique('marcas', 'nome')->ignore($this->id)],
+        $regras = [
+            'nome' => ['required','min:3', Rule::unique('marcas')->ignore($this->marca)],
             'imagem' => ['required','image'],
         ];
+
+         if ($this->method() === 'PATCH') {
+            $regrasDinamicas = array();
+            //Percorre todas as regras
+            foreach ($regras as $input => $regra) {
+                //Coleta apenas as regras aplicáveis aos paramétros passados
+                if (array_key_exists($input, $this->all())) {
+                    $regrasDinamicas[$input] = $regra;
+                }
+            }
+            return $regrasDinamicas;
+        }else{
+            return $regras;
+        }
     }
 }
