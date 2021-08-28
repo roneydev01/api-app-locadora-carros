@@ -41,7 +41,7 @@ class MarcaController extends Controller
 
         $imagem = $request->file('imagem');
         //Salva imagem no disco local e a string de retono do caminho salvo no DB - É criado uma pasta imagens no path(storage/app/public/)
-        $imagem_urn = $imagem->store('imagens', 'public');
+        $imagem_urn = $imagem->store('imagens/marcas', 'public');
         //Cria no DB
         $marca = $this->marca->create([
             'nome' => $request->nome,
@@ -77,17 +77,22 @@ class MarcaController extends Controller
         // print_r($marca->getAttributes());
         // $marca->update($request->all());
         $marca = $this->marca->find($id);
+        $imagem_urn = '';
+
         if($marca === null){
             return response()->json(['erro'=>'Atualização não realizada. Recurso pesquisado não existe', 404]);
         }
 
-        //Remove o arquivo antigo caso um novo arquivo tenha sido enviado no request
         if ($request->file('imagem')) {
-            Storage::disk('public')->delete($marca->imagem);
+            //Remove o arquivo antigo caso exista quandoum novo arquivo tenha sido enviado no request
+            if ($marca->imagem) {
+                Storage::disk('public')->delete('marcas/'.$marca->imagem);
+            }
+
+            $imagem = $request->file('imagem');
+            $imagem_urn = $imagem->store('imagens/marcas', 'public');
         }
 
-        $imagem = $request->file('imagem');
-        $imagem_urn = $imagem->store('imagens', 'public');
 
         $marca->update([
             'nome' => $request->nome,
@@ -110,7 +115,7 @@ class MarcaController extends Controller
 
          //Remove o arquivo caso exista no registro
         if ($marca->imagem) {
-            Storage::disk('public')->delete($marca->imagem);
+            Storage::disk('public')->delete('marcas/'.$marca->imagem);
         }
 
         $marca->delete();
