@@ -26,7 +26,7 @@ class MarcaRequest extends FormRequest
     {
         $regras = [
             'nome' => ['required','min:3', Rule::unique('marcas')->ignore($this->marca)],
-            'imagem' => ['required','image'],
+            'imagem' => ['required','image', 'mimes:png,jpg'],
         ];
 
          if ($this->method() === 'PATCH') {

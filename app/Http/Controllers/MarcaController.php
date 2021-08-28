@@ -32,8 +32,20 @@ class MarcaController extends Controller
      */
     public function store(MarcaRequest $request)
     {
+        // dd($request->nome);
+        // dd($request->get('nome'));
+        // dd($request->imagem);
+        // dd($request->file('imagem'));
         //$marca = Marca::create($request->all());
-        $marca = $this->marca->create($request->all());
+
+        $imagem = $request->file('imagem');
+        //Salva imagem no disco local e a string de retono do caminho salvo no DB - É criado uma pasta imagens no path(storage/app/public/)
+        $imagem_urn = $imagem->store('imagens', 'public');
+        //Cria no DB
+        $marca = $this->marca->create([
+            'nome' => $request->nome,
+            'imagem' => $imagem_urn
+        ]);
         return response()->json($marca,201);
     }
 
