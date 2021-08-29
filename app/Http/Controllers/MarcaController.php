@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MarcaRequest;
 use Illuminate\Http\Request;
 use App\Models\Marca;
+use App\Repositories\MarcaRepository;
 use Illuminate\Support\Facades\Storage;
 
 class MarcaController extends Controller
@@ -22,36 +23,30 @@ class MarcaController extends Controller
      */
     public function index(Request $request )
     {
-       // $marca = Marca::all();
-        $marcas = array();
+        $marcaRepository = new MarcaRepository($this->marca);
 
         //Ex. - atributos_modelo=nome_coluna_1,nome_coluna_2, etc
         if ($request->has('atributos_modelo')) {
-            $atributos_modelo = $request->atributos_modelo;
-            $marcas = $this->marca->with('modelos:marca_id,'.$atributos_modelo);
+            $atributos_modelo = ('modelos:marca_id,'.$request->atributos_modelo);
+            $marcaRepository->selectAtributosRegistrosRelacionados($atributos_modelo);
         }else {
-            $marcas = $this->marca->with('modelos');
+            $marcaRepository->selectAtributosRegistrosRelacionados('modelos');
         }
 
         //Aplicando condições dos filtros enviados
         //Ex. - &filtro=nome_coluna:=:condicao_1;nome_coluna:=:condicao_2;nome_coluna:=:condicao_3;etc
         if ($request->has('filtro')) {
-            $filtros = explode(';', $request->filtro);
-            foreach ($filtros as $key => $condicao) {
-                $c = explode(':', $condicao);
-                $marcas = $marcas->where($c[0], $c[1], $c[2]);
-            }
+            $marcaRepository->filtro($request->filtro);
         }
 
         //Ex. - atributos=forkey,nome_coluna_1,nome_coluna_2, etc
         if($request->has('atributos')) {
-            $atributos = $request->atributos;
-            $marcas = $marcas->selectRaw($atributos)->get();
-        }else{
-            $marcas = $marcas->get();
+            $marcaRepository->selectAtributos($request->atributos);
         }
 
-        return response()->json($marcas,200);
+        $resultado = $marcaRepository->getResultado();
+
+        return response()->json($resultado,200);
     }
 
     /**
