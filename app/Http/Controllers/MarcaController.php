@@ -32,6 +32,13 @@ class MarcaController extends Controller
             $marcas = $this->marca->with('modelos');
         }
 
+        //Aplicando condições dos filtros enviados
+        //Ex. - &filtro=nome_coluna:=:condição
+        if ($request->has('filtro')) {
+            $condicoes = explode(':', $request->filtro);
+            $marcas = $marcas->where($condicoes[0], $condicoes[1], $condicoes[2]);
+        }
+
         if($request->has('atributos')) {
             $atributos = $request->atributos;
             $marcas = $marcas->selectRaw($atributos)->get();
