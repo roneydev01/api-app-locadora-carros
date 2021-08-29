@@ -24,7 +24,7 @@ class ModeloController extends Controller
     public function index(Request $request)
     {
         $modelos = array();
-
+        //Ex. - atributos_marca=nome_coluna_1,nome_coluna_2, etc
         if ($request->has('atributos_marca')) {
             $atributos_marca = $request->atributos_marca;
             $modelos = $this->modelo->with('marca:id,'.$atributos_marca);
@@ -33,12 +33,15 @@ class ModeloController extends Controller
         }
 
         //Aplicando condições dos filtros enviados
-        //Ex. - filtro=nome_coluna:=:condição
+        //Ex. - &filtro=nome_coluna:=:condicao_1;nome_coluna:=:condicao_2;nome_coluna:=:condicao_3;etc
         if ($request->has('filtro')) {
-            $condicoes = explode(':', $request->filtro);
-            $modelos = $modelos->where($condicoes[0], $condicoes[1], $condicoes[2]);
+            $filtros = explode(';', $request->filtro);
+            foreach ($filtros as $key => $condicao) {
+                $c = explode(':', $condicao);
+                $modelos = $modelos->where($c[0], $c[1], $c[2]);
+            }
         }
-
+        //Ex. - atributos=forkey,nome_coluna_1,nome_coluna_2, etc
         if ($request->has('atributos')) {
             $atributos = $request->atributos;
             $modelos = $modelos->selectRaw($atributos)->get();

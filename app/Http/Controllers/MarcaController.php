@@ -25,6 +25,7 @@ class MarcaController extends Controller
        // $marca = Marca::all();
         $marcas = array();
 
+        //Ex. - atributos_modelo=nome_coluna_1,nome_coluna_2, etc
         if ($request->has('atributos_modelo')) {
             $atributos_modelo = $request->atributos_modelo;
             $marcas = $this->marca->with('modelos:marca_id,'.$atributos_modelo);
@@ -33,12 +34,16 @@ class MarcaController extends Controller
         }
 
         //Aplicando condições dos filtros enviados
-        //Ex. - &filtro=nome_coluna:=:condição
+        //Ex. - &filtro=nome_coluna:=:condicao_1;nome_coluna:=:condicao_2;nome_coluna:=:condicao_3;etc
         if ($request->has('filtro')) {
-            $condicoes = explode(':', $request->filtro);
-            $marcas = $marcas->where($condicoes[0], $condicoes[1], $condicoes[2]);
+            $filtros = explode(';', $request->filtro);
+            foreach ($filtros as $key => $condicao) {
+                $c = explode(':', $condicao);
+                $marcas = $marcas->where($c[0], $c[1], $c[2]);
+            }
         }
 
+        //Ex. - atributos=forkey,nome_coluna_1,nome_coluna_2, etc
         if($request->has('atributos')) {
             $atributos = $request->atributos;
             $marcas = $marcas->selectRaw($atributos)->get();
