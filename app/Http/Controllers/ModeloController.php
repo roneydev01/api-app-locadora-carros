@@ -74,7 +74,7 @@ class ModeloController extends Controller
      */
     public function update(ModeloRequest $request, $id)
     {
-        $modelo = $this->modelo->findOrFail($id);
+        $modelo = $this->modelo->find($id);
 
         $dados = $request->except('imagem');
 
@@ -85,7 +85,7 @@ class ModeloController extends Controller
         if ($request->hasFile('imagem')) {
             //Remove o arquivo antigo caso exista quandoum novo arquivo tenha sido enviado no request
             if ($modelo->imagem) {
-                Storage::disk('public')->delete('modelos/'.$modelo->imagem);
+                Storage::disk('public')->delete($modelo->imagem);
             }
 
             $imagem = $request->file('imagem');
@@ -93,8 +93,10 @@ class ModeloController extends Controller
             $dados['imagem'] = $imagem_urn;
 
         }
-
-        $modelo->update($dados);
+        //Preenche o objeto $marca com os dados do request
+        $modelo->fill($dados);
+        $modelo->save();
+        //$modelo->update($dados);
 
         return response()->json($modelo,200);
     }
@@ -114,7 +116,7 @@ class ModeloController extends Controller
 
          //Remove o arquivo caso exista no registro
         if ($modelo->imagem) {
-            Storage::disk('public')->delete('modelos/'.$modelo->imagem);
+            Storage::disk('public')->delete($modelo->imagem);
         }
 
         $modelo->delete();

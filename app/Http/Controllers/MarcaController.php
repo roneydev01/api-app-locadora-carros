@@ -86,18 +86,22 @@ class MarcaController extends Controller
         if ($request->file('imagem')) {
             //Remove o arquivo antigo caso exista quandoum novo arquivo tenha sido enviado no request
             if ($marca->imagem) {
-                Storage::disk('public')->delete('marcas/'.$marca->imagem);
+                Storage::disk('public')->delete($marca->imagem);
             }
 
             $imagem = $request->file('imagem');
             $imagem_urn = $imagem->store('imagens/marcas', 'public');
         }
 
+        //Preenche o objeto $marca com os dados do request (Caso seja enviado com method patch não dará problema)
+        $marca->fill($request->all());
+        $marca->imagem = $imagem_urn;
+        $marca->save();
 
-        $marca->update([
-            'nome' => $request->nome,
-            'imagem' => $imagem_urn
-        ]);
+        // $marca->update([
+        //     'nome' => $request->nome,
+        //     'imagem' => $imagem_urn
+        // ]);
         return response()->json($marca,200);
     }
 
@@ -115,7 +119,7 @@ class MarcaController extends Controller
 
          //Remove o arquivo caso exista no registro
         if ($marca->imagem) {
-            Storage::disk('public')->delete('marcas/'.$marca->imagem);
+            Storage::disk('public')->delete($marca->imagem);
         }
 
         $marca->delete();
