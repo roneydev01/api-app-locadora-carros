@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MarcaRequest;
+use Illuminate\Http\Request;
 use App\Models\Marca;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,10 +20,18 @@ class MarcaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request )
     {
        // $marca = Marca::all();
-        $marcas = $this->marca->with('modelos')->get();
+        $marcas = array();
+
+        if($request->has('atributos')) {
+            $atributos = $request->atributos;
+            $marcas = $this->marca->selectRaw($atributos)->with('modelos')->get();
+        }else{
+            $marcas = $this->marca->with('modelos')->get();
+        }
+
         return response()->json($marcas,200);
     }
 
