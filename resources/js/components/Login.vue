@@ -7,6 +7,11 @@
 
                     <div class="card-body">
                         <form method="POST" action="">
+                            <input
+                                type="hidden"
+                                name="_token"
+                                :value="csrf_token"
+                            />
                             <div class="form-group row">
                                 <label
                                     for="email"
@@ -91,4 +96,8 @@
     </div>
 </template>
 
-<script></script>
+<script>
+export default {
+    props: ["csrf_token"]
+};
+</script>
