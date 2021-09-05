@@ -22,16 +22,23 @@ class AuthController extends Controller
         }
 
     }
-    public function logout()
-    {
-        return 'logout';
-    }
-    public function refresh()
-    {
-        return 'refresh';
-    }
+
     public function me()
     {
         return response()->json(auth()->user());
+    }
+
+    public function refresh()
+    {
+        //O cliente precisar encaminhar um jwt válido
+        $token = auth('api')->refresh();
+        return response()->json(['token' => $token]);
+    }
+
+    public function logout()
+    {
+        //O cliente precisar encaminhar um jwt válido
+        auth('api')->logout();
+        return response()->json(['msg' => 'Logout realizado com sucesso.']);
     }
 }
