@@ -6,7 +6,11 @@
                     <div class="card-header">Login</div>
 
                     <div class="card-body">
-                        <form method="POST" action="">
+                        <form
+                            method="POST"
+                            action=""
+                            @submit.prevent="login($event)"
+                        >
                             <input
                                 type="hidden"
                                 name="_token"
@@ -30,6 +34,7 @@
                                         required
                                         autocomplete="email"
                                         autofocus
+                                        v-model="email"
                                     />
                                 </div>
                             </div>
@@ -50,6 +55,7 @@
                                         name="password"
                                         required
                                         autocomplete="current-password"
+                                        v-model="password"
                                     />
                                 </div>
                             </div>
@@ -98,6 +104,36 @@
 
 <script>
 export default {
-    props: ["csrf_token"]
+    props: ["csrf_token"],
+    data() {
+        return {
+            email: "",
+            password: ""
+        };
+    },
+    methods: {
+        login(e) {
+            let url = "http://localhost:8000/api/login";
+            let configuracao = {
+                method: "post",
+                body: new URLSearchParams({
+                    email: this.email,
+                    password: this.password
+                })
+            };
+
+            fetch(url, configuracao)
+                .then(reposnse => reposnse.json()) //Recupera de modo assyncrono a resposta da requisição e coonverte para json
+                .then(data => {
+                    //recupera o valor do then anterior
+                    if (data.token) {
+                        //verifica se existe o token
+                        document.cookie = "token=" + data.token; //Adiciona o token aos cookie
+                    }
+                    //Dar sequência no envio do form de autenticação por sessão
+                    e.target.submit();
+                });
+        }
+    }
 };
 </script>
