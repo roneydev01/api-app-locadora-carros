@@ -8,34 +8,36 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col mb-3">
-                                <label for="inputId" class="form-label"
-                                    >ID</label
-                                >
-                                <input
-                                    type="number"
-                                    class="form-control"
+                                <input-container-component
                                     id="inputId"
-                                    aria-describedby="idHelp"
-                                    placeholder="ID"
-                                />
-                                <div id="idHelp" class="form-text text-muted">
-                                    Opcional. Informe o ID do registro.
-                                </div>
+                                    titulo="ID"
+                                    id-help="idHelp"
+                                    texto-ajuda="Opcional. Informe o ID do registro."
+                                >
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        id="inputId"
+                                        aria-describedby="idHelp"
+                                        placeholder="ID"
+                                    />
+                                </input-container-component>
                             </div>
                             <div class=" col mb-3">
-                                <label for="inputNome" class="form-label"
-                                    >Nome</label
-                                >
-                                <input
-                                    type="text"
-                                    class="form-control"
+                                <input-container-component
                                     id="inputNome"
-                                    aria-describedby="nomeHelp"
-                                    placeholder="Nome da marca"
-                                />
-                                <div id="nomeHelp" class="form-text text-muted">
-                                    Opcional. Informe o nome da marca.
-                                </div>
+                                    titulo="Nome"
+                                    id-help="nomeHelp"
+                                    texto-ajuda="Opcional. Informe o nome da marca."
+                                >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="inputNome"
+                                        aria-describedby="nomeHelp"
+                                        placeholder="Nome da marca"
+                                    />
+                                </input-container-component>
                             </div>
                         </div>
                     </div>
@@ -53,5 +55,8 @@
     </div>
 </template>
 <script>
-export default {};
+import InputContainer from "./InputContainer.vue";
+export default {
+    components: { InputContainer }
+};
 </script>
