@@ -30,6 +30,7 @@ Vue.component(
     "input-container-component",
     require("./components/InputContainer.vue").default
 );
+Vue.component("table-component", require("./components/Table.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
