@@ -31,6 +31,7 @@ Vue.component(
     require("./components/InputContainer.vue").default
 );
 Vue.component("table-component", require("./components/Table.vue").default);
+Vue.component("card-component", require("./components/Card.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
