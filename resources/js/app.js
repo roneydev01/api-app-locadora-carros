@@ -32,6 +32,7 @@ Vue.component(
 );
 Vue.component("table-component", require("./components/Table.vue").default);
 Vue.component("card-component", require("./components/Card.vue").default);
+Vue.component("modal-component", require("./components/Modal.vue").default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -62,12 +62,16 @@
                         <button
                             type="submit"
                             class="btn btn-primary btn-sm float-right"
+                            data-toggle="modal"
+                            data-target="#idModal"
                         >
                             Adicionar
                         </button>
                     </template>
                 </card-component>
                 <!--Fim do card de listagem de marcas-->
+                <modal-component id="idModal" titulo="Adicionar Marca">
+                </modal-component>
             </div>
         </div>
     </div>
