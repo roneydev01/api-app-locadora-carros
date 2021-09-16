@@ -71,6 +71,50 @@
                 </card-component>
                 <!--Fim do card de listagem de marcas-->
                 <modal-component id="idModal" titulo="Adicionar Marca">
+                    <template v-slot:conteudo>
+                        <div class="form-group">
+                            <input-container-component
+                                id="novoNome"
+                                titulo="Nome da Marca"
+                                id-help="novonomeHelp"
+                                texto-ajuda="Informe o nome da marca."
+                            >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="novoNome"
+                                    aria-describedby="novonomeHelp"
+                                    placeholder="Nome da marca"
+                                />
+                            </input-container-component>
+                            <input-container-component
+                                id="novaImagem"
+                                titulo="Imagem"
+                                id-help="novaImagemHelp"
+                                texto-ajuda="Seleciona uma imagem."
+                            >
+                                <input
+                                    type="file"
+                                    class="form-control-file"
+                                    id="novaImagem"
+                                    aria-describedby="novaImagemHelp"
+                                    placeholder="Seleciona uma imagem."
+                                />
+                            </input-container-component>
+                        </div>
+                    </template>
+                    <template v-slot:rodape>
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Fechar
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Salvar
+                        </button>
+                    </template>
                 </modal-component>
             </div>
         </div>
