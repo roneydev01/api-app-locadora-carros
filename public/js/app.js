@@ -2116,7 +2116,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _InputContainer_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./InputContainer.vue */ "./resources/js/components/InputContainer.vue");
 //
 //
 //
@@ -2239,10 +2238,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    InputContainer: _InputContainer_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  data: function data() {
+    return {
+      urlBase: "http://localhost:800/api/v1/marca",
+      nomeMarca: "",
+      arquivoImagem: []
+    };
+  },
+  methods: {
+    carregarImagem: function carregarImagem(e) {
+      this.arquivoImagem = e.target.files;
+    },
+    salvar: function salvar() {
+      console.log(this.nomeMarca, this.arquivoImagem[0]); //Criado o formulário
+
+      var formData = new FormData();
+      formData.append("nome", this.nomeMarca);
+      formData.append("imagem", this.arquivoImagem[0]); //Defindo os cabeçalhos da requisição
+
+      var config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "aplication/json",
+          Autorization: "Teste"
+        }
+      }; //Enviando a requisição
+
+      axios.post(this.urlBase, formData, config).then(function (response) {
+        console.log(response);
+      })["catch"](function (errors) {
+        console.log(errors);
+      });
+    }
   }
 });
 
@@ -38934,12 +38968,29 @@ var render = function() {
                           },
                           [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.nomeMarca,
+                                  expression: "nomeMarca"
+                                }
+                              ],
                               staticClass: "form-control",
                               attrs: {
                                 type: "text",
                                 id: "novoNome",
                                 "aria-describedby": "novonomeHelp",
                                 placeholder: "Nome da marca"
+                              },
+                              domProps: { value: _vm.nomeMarca },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.nomeMarca = $event.target.value
+                                }
                               }
                             })
                           ]
@@ -38963,6 +39014,11 @@ var render = function() {
                                 id: "novaImagem",
                                 "aria-describedby": "novaImagemHelp",
                                 placeholder: "Seleciona uma imagem."
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.carregarImagem($event)
+                                }
                               }
                             })
                           ]
@@ -38995,7 +39051,12 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-primary",
-                        attrs: { type: "button" }
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.salvar()
+                          }
+                        }
                       },
                       [
                         _vm._v(

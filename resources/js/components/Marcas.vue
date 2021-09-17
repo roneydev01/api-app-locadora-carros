@@ -85,6 +85,7 @@
                                     id="novoNome"
                                     aria-describedby="novonomeHelp"
                                     placeholder="Nome da marca"
+                                    v-model="nomeMarca"
                                 />
                             </input-container-component>
                             <input-container-component
@@ -99,6 +100,7 @@
                                     id="novaImagem"
                                     aria-describedby="novaImagemHelp"
                                     placeholder="Seleciona uma imagem."
+                                    @change="carregarImagem($event)"
                                 />
                             </input-container-component>
                         </div>
@@ -111,7 +113,11 @@
                         >
                             Fechar
                         </button>
-                        <button type="button" class="btn btn-primary">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="salvar()"
+                        >
                             Salvar
                         </button>
                     </template>
@@ -121,8 +127,43 @@
     </div>
 </template>
 <script>
-import InputContainer from "./InputContainer.vue";
 export default {
-    components: { InputContainer }
+    data() {
+        return {
+            urlBase: 'http://localhost:800/api/v1/marca',
+            nomeMarca: "",
+            arquivoImagem: []
+        };
+    },
+    methods: {
+        carregarImagem(e) {
+            this.arquivoImagem = e.target.files;
+        },
+        salvar() {
+            console.log(this.nomeMarca, this.arquivoImagem[0]);
+            //Criado o formulário
+            let formData = new FormData();
+            formData.append("nome", this.nomeMarca);
+            formData.append("imagem", this.arquivoImagem[0]);
+
+            //Defindo os cabeçalhos da requisição
+            let config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': 'aplication/json'
+                }
+            };
+
+            //Enviando a requisição
+            axios
+                .post(this.urlBase, formData, config)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(errors => {
+                    console.log(errors);
+                });
+        }
+    }
 };
 </script>
