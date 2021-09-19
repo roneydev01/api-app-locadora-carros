@@ -71,6 +71,12 @@
                 </card-component>
                 <!--Fim do card de listagem de marcas-->
                 <modal-component id="idModal" titulo="Adicionar Marca">
+
+                    <template v-slot:alertas>
+                        <alert-component tipo="success"></alert-component>
+                        <alert-component tipo="danger"></alert-component>
+                    </template>
+
                     <template v-slot:conteudo>
                         <div class="form-group">
                             <input-container-component

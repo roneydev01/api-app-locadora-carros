@@ -21,6 +21,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <slot name="alertas"></slot>
                 <div class="modal-body">
                     <slot name="conteudo"></slot>
                 </div>
