@@ -128,10 +128,23 @@
 </template>
 <script>
 export default {
+    computed: {
+        token() {
+            //Recupera os dados do token, transforma em array separado por ';' e filtra pelo indice que tem 'token='
+            let token = document.cookie.split(';').find(indice => {
+                return indice.includes('token=')
+            })
+            //pega o segundo elemento do array e separa onde tiver '='
+            token = token.split('=')[1]
+            token = 'Bearer' +token
+
+            return token
+        }
+    },
     data() {
         return {
             urlBase: 'http://localhost:800/api/v1/marca',
-            nomeMarca: "",
+            nomeMarca: '',
             arquivoImagem: []
         };
     },
@@ -150,7 +163,8 @@ export default {
             let config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Accept': 'aplication/json'
+                    'Accept': 'application/json',
+                    'Authorization': this.token
                 }
             };
 

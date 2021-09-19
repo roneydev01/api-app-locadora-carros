@@ -2245,10 +2245,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  computed: {
+    token: function token() {
+      //Recupera os dados do token, transforma em array separado por ';' e filtra pelo indice que tem 'token='
+      var token = document.cookie.split(';').find(function (indice) {
+        return indice.includes('token=');
+      }); //pega o segundo elemento do array e separa onde tiver '='
+
+      token = token.split('=')[1];
+      token = 'Bearer' + token;
+      return token;
+    }
+  },
   data: function data() {
     return {
-      urlBase: "http://localhost:800/api/v1/marca",
-      nomeMarca: "",
+      urlBase: 'http://localhost:800/api/v1/marca',
+      nomeMarca: '',
       arquivoImagem: []
     };
   },
@@ -2265,9 +2277,9 @@ __webpack_require__.r(__webpack_exports__);
 
       var config = {
         headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "aplication/json",
-          Autorization: "Teste"
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json',
+          'Authorization': this.token
         }
       }; //Enviando a requisição
 
