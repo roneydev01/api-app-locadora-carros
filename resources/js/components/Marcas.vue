@@ -147,6 +147,9 @@ export default {
             return token
         }
     },
+    mounted() {
+        this.carregarLista()
+    },
     data() {
         return {
             urlBase: 'http://localhost:8000/api/v1/marca',
@@ -154,9 +157,29 @@ export default {
             arquivoImagem: [],
             transacaoStatus: '',
             transacaoDetalhes: {},
+            marcas: []
         };
     },
     methods: {
+        carregarLista() {
+
+            //Defindo os cabeçalhos da requisição
+            let config = {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': this.token
+                }
+            };
+
+            axios.get(this.urlBase, config)
+                .then(response => {
+                    this.marcas = response.data
+                    console.log(this.marcas)
+                })
+                .catch(errors => {
+                    console.log(errors)
+                })
+        },
         carregarImagem(e) {
             this.arquivoImagem = e.target.files;
         },
