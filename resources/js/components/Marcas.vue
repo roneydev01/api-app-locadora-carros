@@ -55,7 +55,11 @@
                 <!--Inicio do card de listagem de marcas-->
                 <card-component titulo="Relação de Marcas">
                     <template v-slot:conteudo>
-                        <table-component></table-component>
+                        <table-component
+                            :dados="marcas"
+                            :titulos="['ID', 'Nome', 'Imagem']"
+                        >
+                        </table-component>
                     </template>
 
                     <template v-slot:rodape>
@@ -147,9 +151,6 @@ export default {
             return token
         }
     },
-    mounted() {
-        this.carregarLista()
-    },
     data() {
         return {
             urlBase: 'http://localhost:8000/api/v1/marca',
@@ -174,7 +175,7 @@ export default {
             axios.get(this.urlBase, config)
                 .then(response => {
                     this.marcas = response.data
-                    console.log(this.marcas)
+                    //console.log(this.marcas)
                 })
                 .catch(errors => {
                     console.log(errors)
@@ -218,6 +219,9 @@ export default {
                     //console.log(errors.response);
                 });
         }
-    }
+    },
+    mounted() {
+        this.carregarLista()
+    },
 };
 </script>
