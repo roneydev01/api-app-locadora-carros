@@ -2,13 +2,10 @@
     <div :class="estilo" role="alert">
         {{titulo}}
         <hr/>
-        <!--Quando vem do response de errors-->
-        <span v-if="detalhes.data.message">{{detalhes.data.message}}</span>
-        <!--Quando vem do response de sucesso-->
-        <span v-if="detalhes.data.id">{{'Id do registro ' + detalhes.data.id}}</span>
+        <p>{{ detalhes.mensagem }}</p>
         <br/>
-        <ul v-if="detalhes.data.errors">
-            <li v-for="e, key in detalhes.data.errors" :key="key">{{ e[0] }}</li>
+        <ul v-if="detalhes.dados">
+            <li v-for="e, key in detalhes.dados" :key="key">{{ e[0] }}</li>
         </ul>
     </div>
 </template>
